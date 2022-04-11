@@ -1,44 +1,40 @@
+#include <iostream>
+#include <algorithm>
 #include <bits/stdc++.h>
+ 
 using namespace std;
-
-#define ll long long
-
-int main() {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
-
-	int N, A;
-	cin >> N >> A;
-	vector <int> v(A+1, 0);
-
-	for (int i = 0; i < N; i++){
-		int tmp1, tmp2;
-		cin >> tmp1 >> tmp2;
-		v[tmp1] = tmp2;
-		
-	}
-	cout << endl;
-	for (int i = 0; i <= A; ++i) cout << v[i] << " ";
-	cout << endl;
-	
-
-	vector <int> steps(A+2);
-	//	initialize steps as not taking any jetpacks.
-	for (int i = 0; i <= A; ++i){
-		steps[i] = i;
-		cout << steps[i] << " ";
-	}
-	cout << endl;
-	
-	for (int i = 0; i <= A; ++i){
-		if (i != 0)
-			steps[i] = min(steps[i], steps[i-1] + 1);
-		steps[i + v[i] ] = min(steps[i + v[i] ], steps[i]);
-	}
-
-	cout << steps[A] << endl;
-
-
-	return 0;
+#define ll long long 
+#define ld long double 
+#define ui unsigned int 
+#define ull unsigned ll
+int INF = 1e9 + 7;
+vector<int> dp(100005, INF);
+vector<int> val[100005];
+ 
+int main()
+{
+    #ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+    #endif
+    int n, m;
+    cin >> n >> m;
+    int t, f;
+    for (int i = 0; i < n; i++){
+        cin >> t >> f;
+        val[t].push_back(f);
+    }
+    dp[0] = 0;
+    for (int i = 0; i < m; i++){
+        for (auto a : val[i]){
+            if (i + a <= m) dp[i + a] = min(dp[i + a], dp[i]); 
+        }
+        dp[i + 1] = min(dp[i] + 1, dp[i + 1]);
+    }
+    // for (int i = 0; i <= m; i++){
+    //     cout << dp[i] << endl;
+    // }
+    cout << dp[m];
+ 
 }
 
